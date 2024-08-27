@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL;
         public NpgsqlConnection Connection { get; set; }
 
         public DBConnect() { 
-         Connection = new NpgsqlConnection("Server=localhost;Port=5432;Database=produtos;User Id=postgres;Password=dbadmin");
+         Connection = new NpgsqlConnection("Server=localhost;Port=5432;Database=GestaoProdutos;User Id=postgres;Password=1234");
          Connection.Open();
         }
 

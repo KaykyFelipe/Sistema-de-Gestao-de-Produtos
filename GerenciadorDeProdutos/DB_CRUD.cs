@@ -8,58 +8,38 @@ namespace DBCRUD
     public class DataRepository 
     {
         public DBConnect conn = new DBConnect();
-
-
-        //CRUD CADASTROS__________________________________________________________________________________________________
-        public void Cadastro_Cliente_DB(Usuario dados)
+//CRUD CADASTROS__________________________________________________________________________________________________
+        public void CadastroProdutoDB(string codigo,string nome,double valor)
         {
 
             using var conn = new DBConnect();
 
-            string query = @"INSERT INTO cliente (email,celular,nome,senha) VALUES
-                            (@email,@numero_celular,@nome,@senha);";
+            string query = @"INSERT INTO produtos (codigo_prod,nome,valor) VALUES
+                            (@codigo,@nome,@valor);";
 
-            
-           
-                var result = conn.Connection.Execute(sql: query, param: dados); 
+            var result = conn.Connection.Execute(sql: query, param: new {codigo = codigo, nome = nome, valor = valor}); 
 
         }
-
-        public void Cadastro_Produtor_DB(Usuario dados)
+    
+     public List<DataRepository> ListaProdutosDB()
         {
+            using var conn = new DBConnect();
 
-            using var conn = new DBConnection();
+            string query = @"select * from produtos";
 
-            string query = @"INSERT INTO produtor (email,celular,nome,senha,chave_pix) VALUES
-                            (@email,@numero_celular,@nome,@senha,@chave_pix);";
+            var result = conn.Connection.Query<DataRepository>(sql: query, param: new { }).ToList();
 
-           
-           
-
-                var result = conn.Connection.Execute(sql: query, param: dados);
-
-         
-         
-
+            return result;
         }
+    
+    
+    }
 
-        public void Cadastro_Propriedade_DB(Usuario dados)
-        {
+    
 
-            using var conn = new DBConnection();
+}
 
-            string query = @"INSERT INTO propriedade (tamanho,rua,numero,bairro,cidade,estado,email_proprietario,tipo,area_plantada) VALUES
-                     (@tamanho,@rua,@numero,@bairro,@cidade,@estado,@email_proprietario,@tipo,@area_plantada);";
-
-            var result = conn.Connection.Execute(sql: query, param: dados);
-
-
-
-
-
-        }
-
-        //CRUD LOGIN__________________________________________________________________________________________________
+   /*     //CRUD LOGIN__________________________________________________________________________________________________
         public bool Login_Cliente_DB(Usuario dados)
         {
             using var conn = new DBConnection();
@@ -90,46 +70,15 @@ namespace DBCRUD
         //CRUD CONTROLE DE ESTOQUE E RELATORIO (INTERFACE PRODUTOR)__________________________________________________________________________________________________
 
 
-        public string Nome_Produto { get; set; }
-        public int Qtd_Disponivel { get; set; }
-        public float Preco_Produto { get; set; }
-        public int ID_Propriedade { get; set; }
-        public string Cidade { get; set; }
-
-
-
-
-        public List<DataRepository> Controle_Estoque_DB(string email)
-        {
-            using var conn = new DBConnection();
-
-            string query = @"select prod.nome as Nome_Produto,
-                            ce.quantidade as Qtd_Disponivel,
-                            ce.preco_unitario as Preco_Produto ,
-                            pro.id as ID_Propriedade,
-                            pro.cidade as Cidade
-                            from prodagricola prod, 
-                            propriedade pro inner join plantio pl on pl.id_propriedade = pro.id
-                            inner join colheita_estoque ce on ce.id_plantio  = pl.id
-                            where pro.email_proprietario = @email 
-                            and prod.id = pl.id_prodagricola;";
-
-            var result_DB_Estoque = conn.Connection.Query<DataRepository>(sql: query, param: new { email = email }).ToList();
-
-            return result_DB_Estoque;
-        }
-        public string PRODUTO { get; set; }
-        public int ID_PRODUTO { get; set; }
-
-        public List<DataRepository> Select_Produtos_Agricolas()
+             public List<DataRepository> Select_Produtos_Agricolas()
         {
             using var conn = new DBConnection();
 
             string query = @"select id as ID_PRODUTO, nome as PRODUTO from prodagricola;";
 
-            var result_DB_Plantio = conn.Connection.Query<DataRepository>(sql: query, param: new { }).ToList();
+            var result = conn.Connection.Query<DataRepository>(sql: query, param: new { }).ToList();
 
-            return result_DB_Plantio;
+            return result;
         }
 
         public int Area_disponivel { get; set; }
@@ -190,9 +139,9 @@ namespace DBCRUD
                     inner join prodagricola prd on prd.id = pl.id_prodagricola
                     where p.id = (select p.id from propriedade p where email_proprietario = @email);";
 
-            var result_DB_Plantio = conn.Connection.Query<DataRepository>(sql: query2, param: new { email = email }).ToList();
+            var result = conn.Connection.Query<DataRepository>(sql: query2, param: new { email = email }).ToList();
 
-            return result_DB_Plantio;
+            return result;
         }
 
         public void Cadastro_Colheita(int quant_colhida, float valor_produto, int id_plantio)
@@ -335,4 +284,4 @@ namespace DBCRUD
 
     }
 
-}
+}*/
