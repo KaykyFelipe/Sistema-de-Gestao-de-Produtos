@@ -17,21 +17,28 @@ namespace DBCRUD
             string query = @"INSERT INTO produtos (codigo_prod,nome,valor) VALUES
                             (@codigo,@nome,@valor);";
 
-            var result = conn.Connection.Execute(sql: query, param: new {codigo = codigo, nome = nome, valor = valor}); 
+            var result = conn.Conexao.Execute(sql: query, param: new {codigo = codigo, nome = nome, valor = valor}); 
 
         }
+
+        
     
-     public List<DataRepository> ListaProdutosDB()
+     public void ListaProdutosDB()
         {
-            using var conn = new DBConnect();
+            
+            using var conn = new DBConnect(); //Conexao com Banco de Dados
+            NpgsqlCommand query = new NpgsqlCommand("select * from produtos", conn.Conexao); //Criando Objeto para Ler Dados da Tabela
+       
+            NpgsqlDataReader lerDados = query.ExecuteReader();//Execução da Query
 
-            string query = @"select * from produtos";
+            foreach (var item in lerDados)
+            {
+                Console.WriteLine("Codigo Produto: " + lerDados["codigo_prod"] + " | Nome: " + lerDados["nome"] + " | Valor: " + lerDados["valor"]);
+            }
 
-            var result = conn.Connection.Query<DataRepository>(sql: query, param: new { }).ToList();
+            
 
-            return result;
         }
-    
     
     }
 

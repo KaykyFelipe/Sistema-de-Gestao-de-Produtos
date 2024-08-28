@@ -5,15 +5,15 @@ using Npgsql.EntityFrameworkCore.PostgreSQL;
 
     public class DBConnect: IDisposable
     {
-        public NpgsqlConnection Connection { get; set; }
+        public NpgsqlConnection Conexao { get; set; }
 
         public DBConnect() { 
-         Connection = new NpgsqlConnection("Server=localhost;Port=5432;Database=GestaoProdutos;User Id=postgres;Password=1234");
-         Connection.Open();
+         Conexao = new NpgsqlConnection("Server=localhost;Port=5432;Database=GestaoProdutos;User Id=postgres;Password=1234");
+         Conexao.Open();
         }
 
         public void Dispose()
         {
-            Connection.Dispose();
+            Conexao.Dispose();
         }
     }
