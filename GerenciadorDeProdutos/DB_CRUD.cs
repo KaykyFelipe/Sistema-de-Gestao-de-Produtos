@@ -12,13 +12,9 @@ namespace DBCRUD
         public void CadastroProdutoDB(string codigo,string nome,double valor)
         {
 
-            using var conn = new DBConnect();
-
-            string query = @"INSERT INTO produtos (codigo_prod,nome,valor) VALUES
-                            (@codigo,@nome,@valor);";
-
-            var result = conn.Conexao.Execute(sql: query, param: new {codigo = codigo, nome = nome, valor = valor}); 
-
+        using var conn = new DBConnect(); //Conexao com Banco de Dados
+        NpgsqlCommand query = new NpgsqlCommand(@"INSERT INTO produtos (codigo_prod,nome,valor) VALUES (@codigo,@nome,@valor);", conn.Conexao); //Criando Objeto para Inserir Dados da Tabela
+        Npgsql
         }
 
         
