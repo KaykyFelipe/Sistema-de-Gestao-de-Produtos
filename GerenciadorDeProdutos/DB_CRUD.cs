@@ -7,11 +7,11 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace DBCRUD
 {
-    public class DataRepository 
+    public class DataRepository : Gerenciamento
     {
     public DBConnect conn = new DBConnect();
 
-    public void CadastroProdutoDB(string codigo,string nome,double valor)
+    public override void cadastrarProdutos(string codigo,string nome,double valor)
         {
         using var conn = new DBConnect(); //Conexao com Banco de Dados
         NpgsqlCommand query = new NpgsqlCommand(@"INSERT INTO produtos (codigo_prod,nome,valor) VALUES (@codigo,@nome,@valor);", conn.Conexao); //Criando Objeto para Inserir Dados da Tabela
@@ -21,9 +21,14 @@ namespace DBCRUD
             query.Parameters.AddWithValue("@nome", nome);
             query.Parameters.AddWithValue("@valor", valor);
             query.ExecuteNonQuery();//Execução da Query
+
+            Console.ReadKey();
+            Console.Clear();
+            Lobby();
+            
         }
 
-    public void ListaProdutosDB()
+    public override void listarProdutos()
         {
             
             using var conn = new DBConnect(); //Conexao com Banco de Dados
@@ -36,9 +41,12 @@ namespace DBCRUD
             {
                 Console.WriteLine("Codigo Produto: " + lerDados["codigo_prod"] + " | Nome: " + lerDados["nome"] + " | Valor: " + lerDados["valor"]);
             }
+            Console.ReadKey();
+            Console.Clear();
+            Lobby();
         }
 
-    public void editarProdutosDB(string codigo,string nome,double valor)
+    public override void editarProdutos(string codigo,string nome,double valor)
         {
             
             using var conn = new DBConnect(); //Conexao com Banco de Dados
@@ -50,20 +58,25 @@ namespace DBCRUD
             query.Parameters.AddWithValue("@valor", valor);
             query.ExecuteReader();//Execução da Query
 
+            Console.ReadKey();
+            Console.Clear();
+            Lobby();
 
         }    
 
-    public void removerProdutoDB(string codigo)
+    public override void excluirProdutos(string codigo)
     {
         using var conn = new DBConnect(); //Conexao com Banco de Dados
-        NpgsqlCommand query = new NpgsqlCommand(@"DELETE FROM produtos WHERE codigo_prod = '@codigo'", conn.Conexao); //Criando Objeto para Remover Dados da Tabela
+        NpgsqlCommand query = new NpgsqlCommand(@"DELETE FROM produtos WHERE codigo_prod = @codigo", conn.Conexao); //Criando Objeto para Remover Dados da Tabela
 
             //Adicionando os valores dos atributos na Query
             query.Parameters.AddWithValue("@codigo", codigo);
         
             query.ExecuteReader();//Execução da Query            
 
-
+            Console.ReadKey();
+            Console.Clear();
+            Lobby();
 
     }
     }   
